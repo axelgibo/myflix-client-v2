@@ -84,127 +84,64 @@ export const ProfileView = () => {
     }
   };
 
-  const fetchMovie = async (movieId, storedToken) => {
-    try {
-      console.log(`fetchMovie: Starting fetch for movieId: ${movieId}`);
-      const response = await fetch(
-        `https://myflix-application-318482b84ceb.herokuapp.com/movies/${movieId}`,
-        {
-          headers: { Authorization: `Bearer ${storedToken}` },
-        }
-      );
-      console.log(
-        `fetchMovie: Response received for movieId: ${movieId}`,
-        response
-      );
-      if (!response.ok) {
-        console.error(
-          `fetchMovie: Failed to fetch movie with ID: ${movieId}`,
-          response.status
-        );
-        return null;
-      }
-      console.log(
-        `fetchMovie: Response OK, parsing JSON for movieId: ${movieId}`
-      );
-      const data = await response.json();
-      console.log(
-        `fetchMovie: Movie data received for movieId: ${movieId}`,
-        data
-      );
-      return data;
-    } catch (error) {
-      console.error(
-        `fetchMovie: Error fetching movie with ID: ${movieId}`,
-        error
-      );
-      return null;
-    }
-  };
-
-    useEffect(() => {
-      const getMovie = async () => {
-        try {
-          const movieData = await fetchMovie(movieId, storedToken);
-          setMovie(movieData);
-        } catch (err) {
-          setError(err);
-        }
-      };
-      getMovie();
-    }, [movieId, storedToken]);
-
-    if (error) {
-      return <div>Error loading movie.</div>; // Display error message
-    }
-
-    if (!movie) return <div>Loading...</div>;
-
     return (
       <Card>
-        <Card.Img variant="top" src={movie.ImagePath} alt={movie.Title} />
         <Card.Body>
-          <Card.Title>{movie.Title}</Card.Title>
+          <Card.Title>Your Profile</Card.Title>
+          <Form onSubmit={handleUpdate}>
+            <Form.Group>
+              <Form.Label>Username:</Form.Label>
+              <Form.Control
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Password:</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Email:</Form.Label>
+              <Form.Control
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Birthday:</Form.Label>
+              <Form.Control
+                type="date"
+                value={birthday}
+                onChange={(e) => setBirthday(e.target.value)}
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Update Profile
+            </Button>
+          </Form>
+          <Button variant="danger" onClick={handleDelete}>
+            Delete Account
+          </Button>
+          <Card.Title>Favorite Movies</Card.Title>
+          <Row>
+            {favoriteMovies &&
+              favoriteMovies.map((movieId) => (
+                <Col key={movieId}>
+                  <React.Suspense fallback={<div>Loading...</div>}>
+                    <MovieImage movieId={movieId} storedToken={storedToken} />
+                  </React.Suspense>
+                </Col>
+              ))}
+          </Row>
         </Card.Body>
       </Card>
     );
   };
 
-  return (
-    <Card>
-      <Card.Body>
-        <Card.Title>Your Profile</Card.Title>
-        <Form onSubmit={handleUpdate}>
-          <Form.Group>
-            <Form.Label>Username:</Form.Label>
-            <Form.Control
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Password:</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Email:</Form.Label>
-            <Form.Control
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Birthday:</Form.Label>
-            <Form.Control
-              type="date"
-              value={birthday}
-              onChange={(e) => setBirthday(e.target.value)}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Update Profile
-          </Button>
-        </Form>
-        <Button variant="danger" onClick={handleDelete}>
-          Delete Account
-        </Button>
-        <Card.Title>Favorite Movies</Card.Title>
-        <Row>
-          {favoriteMovies &&
-            favoriteMovies.map((movieId) => (
-              <Col key={movieId}>
-                <React.Suspense fallback={<div>Loading...</div>}>
-                  <MovieImage movieId={movieId} storedToken={storedToken} />
-                </React.Suspense>
-              </Col>
-            ))}
-        </Row>
-      </Card.Body>
-    </Card>
-  );
+ 
