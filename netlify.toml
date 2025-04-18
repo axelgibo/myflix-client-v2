@@ -5,5 +5,5 @@
 
 [build]
   environment = { NODE_VERSION = "20" } 
-  command = "parcel build src/index.html --public-url /"
+   command = "parcel build public/index.html --public-url /"
   publish = "dist"
