@@ -1,0 +1,9 @@
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
+
+[build]
+  environment = { NODE_VERSION = "20" } 
+  command = "parcel build src/index.html --public-url /"
+  publish = "dist"
