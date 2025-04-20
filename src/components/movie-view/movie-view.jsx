@@ -1,12 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./movie-view.scss";
+import { useNavigate } from 'react-router-dom';
 
-export const MovieView = ({ movie, onBackClick }) => {
+export const MovieView = ({ movie }) => {
+  const navigate = useNavigate(); // Get the navigate function
+
   return (
     <div className="movie-view">
       <button
-        onClick={onBackClick}
+        onClick={() => navigate(-1)} // Use navigate(-1) here
         className="back-button"
         style={{ cursor: "pointer" }}
       >
@@ -43,5 +46,4 @@ MovieView.propTypes = {
     }).isRequired,
     // Add other movie properties here if needed
   }).isRequired,
-  onBackClick: PropTypes.func.isRequired,
 };
