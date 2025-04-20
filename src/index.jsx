@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import './index.scss';
 import { MainView } from './components/main-view/main-view';
 import Container from 'react-bootstrap/Container';
